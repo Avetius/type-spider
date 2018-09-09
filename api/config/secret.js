@@ -1,1 +1,0 @@
-module.exports = 'MyS3cr3tK3Y';
