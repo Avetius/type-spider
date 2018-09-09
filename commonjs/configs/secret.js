@@ -1,0 +1,1 @@
+export default secret = 'MyS3cr3tK3Y';

@@ -1,0 +1,4 @@
+require('babel-register')
+require('../dist/app')
+require('../server/setup/db')
+require('../server/config/db.config')
