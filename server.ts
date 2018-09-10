@@ -1,12 +1,11 @@
-global.devMode = require('./api/config/env');
-//const chalk = require("chalk");
+import { devMode } from './api/config/env';
 import { chalk } from "chalk";
-const fs = require('fs')
 
-const db = require("./api/config/db.js")[devMode];
-const app = require('./api/setup/express.js');
-const broker = require('./api/broker/mosca');
-const mailer = require('./api/helpers/mailSender');
+import { config } from './api/config/db.js';
+import { app } from './api/setup/express.js';
+import { broker } from './api/broker/mosca';
+
+const db = config[devMode];
 
 let port;
 if (devMode === "heroku") {
