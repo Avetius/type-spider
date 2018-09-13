@@ -60,13 +60,11 @@ class ExpressApp {
     }
 
     private routesConfig(): void {
-        const router = express.Router()
+        const router = express.Router();
         router.get('/', (_req, res) => {
-            res.json({
-                message: 'Hello World!'
-            })
-        })
-        this.app.use('/', router)        
+            res.json({ message: 'Hello World!' });
+        });
+        this.app.use('/', router);        
     }
 
     private async initBroker() {
