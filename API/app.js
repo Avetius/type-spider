@@ -5,14 +5,14 @@ const http = require("http");
 const config = 8080;
 const port = normalizePort(config);
 function onListening() {
-    var addr = server.address();
-    var bind = typeof addr === "string"
+    const addr = server.address();
+    const bind = typeof addr === "string"
         ? "pipe " + addr
         : "port " + addr.port;
     console.log("Listening on " + bind);
 }
 function normalizePort(val) {
-    var port = parseInt(val, 10);
+    const port = parseInt(val, 10);
     if (isNaN(port)) {
         return val;
     }
@@ -25,7 +25,7 @@ function onError(error) {
     if (error.syscall !== "listen") {
         throw error;
     }
-    var bind = typeof port === "string"
+    const bind = typeof port === "string"
         ? "Pipe " + port
         : "Port " + port;
     switch (error.code) {

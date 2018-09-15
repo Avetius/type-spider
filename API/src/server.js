@@ -35,9 +35,7 @@ class ExpressApp {
     routesConfig() {
         const router = express.Router();
         router.get('/', (_req, res) => {
-            res.json({
-                message: 'Hello World!'
-            });
+            res.json({ message: 'Hello World!' });
         });
         this.app.use('/', router);
     }

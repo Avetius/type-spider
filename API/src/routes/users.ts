@@ -1,12 +1,11 @@
-import * as express from 'express';
-import { isAdmin, isUser } from '../middleware/userRole.ts';
+import { Router, Request, Response } from 'express';
+import { isAdmin, isUser, isLoggedIn } from '../middleware/userRoles';
 import validate from '../validators/validator';
-import isLoggedIn from '../setup/auth.js').isLoggedIn;
 
-const router = express.Router();
+const router: Router = Router();
 
 router
-    .post('/signup', validate('userSignUp'), userCtrl.signup)
+    .post('/signup', validate('userSignUp'), )
     .post('/login', validate('userLogin'), userCtrl.login)
     .post('/verify/:verifyToken', userCtrl.verify)
     .post('/upload', /*upload.single('image'),*/ userCtrl.upload)
@@ -33,4 +32,4 @@ router
     // route for logging out
     .get('/logout', userCtrl.logout);
 
-module.exports = router;
+export const userRoutes: Router = router;

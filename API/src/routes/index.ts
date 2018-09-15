@@ -1,16 +1,16 @@
-import { express }  from 'express';
-import { user } from './users';
-import { gateRoutes } from './gatesRoutes.js';
-import { lightRoutes } from './lightsRoutes.js';
-import { meterRoutes } from './metersRoutes.js';
-import { barrierRoutes } from './barriersRoutes.js';
+import { Router } from 'express';
+import { userRoutes } from './users';
+import { gateRoutes } from './gates';
+import { lightRoutes } from './lights';
+import { meterRoutes } from './meters';
+import { barrierRoutes } from './barriers';
 
-const router = express.Router();
+const router = Router();
 
-router.use('/user', user);
-router.use('/gate', gateRoutes);
-router.use('/light', lightRoutes);
-router.use('/meter', meterRoutes);
-router.use('/barrier', barrierRoutes);
+router.use('/user', <Router>userRoutes);
+router.use('/gate', <Router>gateRoutes);
+router.use('/light', <Router>lightRoutes);
+router.use('/meter', <Router>meterRoutes);
+router.use('/barrier', <Router>barrierRoutes);
 
 module.exports = router;
