@@ -1,9 +1,16 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const amqp = require("amqplib/callback_api");
+exports.__esModule = true;
+var amqp = require("amqplib/callback_api");
 amqp.connect('amqp://localhost', function (err, conn) {
+    if (err) {
+        console.error('Error -> ', err);
+    }
     conn.createChannel(function (err, ch) {
-        const q = 'rpc_queue';
+        if (err) {
+            console.error('Error -> ', err);
+        }
+        console.log('server channel created');
+        var q = 'rpc_queue';
         ch.assertQueue(q, { durable: false });
         ch.prefetch(1);
         console.log(' [x] Awaiting RPC requests');
@@ -12,7 +19,7 @@ amqp.connect('amqp://localhost', function (err, conn) {
                 var n = parseInt(msg.content.toString());
                 console.log(" [.] fib(%d)", n);
                 var r = fibonacci(n);
-                ch.sendToQueue(msg.properties.replyTo, Buffer.alloc(r.toString().length, r.toString()), { correlationId: msg.properties.correlationId });
+                ch.sendToQueue(msg.properties.replyTo, Buffer.from(r.toString()), { correlationId: msg.properties.correlationId });
                 ch.ack(msg);
             }
         });
@@ -21,7 +28,5 @@ amqp.connect('amqp://localhost', function (err, conn) {
 function fibonacci(n) {
     if (n == 0 || n == 1)
         return n;
-    else
-        return fibonacci(n - 1) + fibonacci(n - 2);
+    return fibonacci(n - 1) + fibonacci(n - 2);
 }
-//# sourceMappingURL=rabbitmq-p.js.map

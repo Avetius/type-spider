@@ -1,4 +1,5 @@
-import * as amqp from 'amqplib/callback_api';
+import * as amqp from'amqplib/callback_api';
+import * as uuid from 'uuid';
 
 amqp.connect('amqp://localhost', function(err, conn) {
     if (err) {
@@ -23,13 +24,13 @@ amqp.connect('amqp://localhost', function(err, conn) {
                 ch.sendToQueue(msg.properties.replyTo,
                     Buffer.from(r.toString()),
                     {correlationId: msg.properties.correlationId});
+
                 ch.ack(msg);
             }
         });
     });
 });
 
-function fibonacci(n) {
-    if (n == 0 || n == 1) return n;
-    return fibonacci(n - 1) + fibonacci(n - 2);
+export class Broker {
+  
 }
