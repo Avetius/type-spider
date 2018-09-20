@@ -16,7 +16,7 @@ amqp.connect('amqp://localhost', function (err, conn) {
             console.error('Error -> ', err);
         }
         console.log('client channel created');
-        ch.assertQueue('', { exclusive: true }, function (err, q) {
+        ch.assertQueue('asd', { exclusive: true }, function (err, q) {
             if (err) {
                 console.error('Error -> ', err);
             }

@@ -1,6 +1,6 @@
 
 import * as amqp from'amqplib/callback_api';
-// import * as uuid from 'uuid';
+import * as uuid from 'uuid';
 
 let args = process.argv.slice(2);
 
@@ -19,12 +19,12 @@ amqp.connect('amqp://localhost', function(err, conn) {
             console.error('Error -> ', err);
         }
         console.log('client channel created');
-        ch.assertQueue('', {exclusive: true}, function(err, q) {
+        ch.assertQueue('asd', {exclusive: true}, function(err, q) {
 
             if (err) {
                 console.error('Error -> ', err);
             }
-            let corr = generateUuid(); //generateUuid();  uuid.v4().toString();
+            let corr = uuid.v4().toString(); //generateUuid();  uuid.v4().toString();
             let num = parseInt(args[0]);
 
             console.log(' [x] Requesting fib(%d)', num);
@@ -42,8 +42,8 @@ amqp.connect('amqp://localhost', function(err, conn) {
     });
 });
 
-function generateUuid() {
-return Math.random().toString() +
-    Math.random().toString() +
-    Math.random().toString();
-}
+// function generateUuid() {
+// return Math.random().toString() +
+//     Math.random().toString() +
+//     Math.random().toString();
+// }
