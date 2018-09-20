@@ -1,17 +1,20 @@
-import * as amqp from'amqp-ts';
+import * as amqp from 'amqp-ts';
 
 const queueNames = {
     userService: 'userService',
     controllerService: 'controllerService',
 }
-export default class Broker {
+
+export class Broker {
   private conn;
   private queues;
   private queueNames;
 
   constructor() {
     this.init();
-    this.queueNames = queueNames
+    this.conn;
+    this.queues;
+    this.queueNames;
   }
 
   private async init() {
@@ -29,16 +32,13 @@ export default class Broker {
     return response;
   }
 
-  public async listen(name){
+  public async listen(name, factory){
     const validQueue = this.queues.filter(q => q === name);
     if (!validQueue) throw new Error('cannot find queue name');
     this.queues.name.activateConsumer((message) => {
         const msg = message.getContent();
-        const n = parseInt(msg.num);
-        console.log(' [.] fib(' + n + ')');
-      
         // return fibonacci number
-        return fibonacci(n);
+        return factory(msg);
       }, {noAck: false});
   }
 } 
