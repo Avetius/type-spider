@@ -8,9 +8,9 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}/src/broker/rabbitmq.js",
+            "program": "${workspaceFolder}/src/app.js",
             "outFiles": [
-                "${workspaceFolder}/**/*.js"
+                "${workspaceFolder}/src/*.js"
             ]
         }
     ]

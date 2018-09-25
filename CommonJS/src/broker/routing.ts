@@ -7,10 +7,11 @@ const broker = new Broker();
 class Routes {
   public async switch(message) {
     switch (message.header) {
-      case 'user':
-      return controller.user(message.body)
+      case 'create':
+      return await controller.create(message.body)
     }
   }
 }
+
 const routes = new Routes();
-broker.listen('user', routes);
+broker.listen('users', routes.switch);

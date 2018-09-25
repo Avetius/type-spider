@@ -21,13 +21,12 @@ console.log(' [x] Requesting fib(%d)', num);
 // easy optimized rpc for RabbitMQ
 // send a rpc request, it will automatically be sent after the the queue declaration
 // has finished successfully
-queue.rpc(msg).then(function(result) {
+queue.rpc(msg).then((result) => {
   console.log(' [.] Got ', result.getContent());
 });
 
 // or use the method explained in the tutorial
 // todo: write the code!
-
 
 // after half a second close the connection
 setTimeout(function() {

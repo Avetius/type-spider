@@ -1,5 +1,6 @@
 export class Controller {
-  user(asd) {
-    console.log(asd);
+  create(input) {
+    console.log('Controller.user() -> ', input);
+    return 'Bolyolyo';
   }
 };

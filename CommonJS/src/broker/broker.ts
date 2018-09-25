@@ -1,44 +1,58 @@
 import * as amqp from 'amqp-ts';
 
+interface Iqueue {
+  name: string;
+  conn: any;
+}
+
 const queueNames = {
-    userService: 'userService',
-    controllerService: 'controllerService',
+  users: 'users',
+  controllers: 'controllers',
 }
 
 export class Broker {
-  private conn;
-  private queues;
-  private queueNames;
+  public conn;
+  public queues: Iqueue[];
+  public queueNames;
+  private validQueue;
 
   constructor() {
-    this.init();
     this.conn;
     this.queues;
-    this.queueNames;
+    this.queueNames = queueNames;
   }
 
-  private async init() {
+  private async init(name) {
     this.conn = new amqp.Connection();
-    Object.keys(this.queueNames).map(name => {
-      this.queues = this.conn.declareQueue(name, {durable: false});
+    this.queues = await Object.keys(this.queueNames).map(name => {
+      return {
+        name: name,
+        conn: this.conn.declareQueue(name, {durable: false})
+      }
     });
+    const [queue] = await this.queues.filter(q => {
+      if (q.name === name) return q.conn
+    });
+    if (!queue) {
+      console.error(`cannot find queue name -> ${name}`);
+      process.exit(1);
+    }
+    this.validQueue = queue.conn;
   }
 
   public async send(name: string, msg){
-    const validQueue = this.queues.filter(q => q === name);
-    if (!validQueue) throw new Error('cannot find queue name');
-    const response = this.queues.name.rpc(msg);
-    console.log('response -> ', response);
+    await this.init(name);
+    const response = await this.validQueue.rpc(msg);
     return response;
   }
 
   public async listen(name, factory){
-    const validQueue = this.queues.filter(q => q === name);
-    if (!validQueue) throw new Error('cannot find queue name');
-    this.queues.name.activateConsumer((message) => {
+    await this.init(name);
+    console.log('queue -> ', this.validQueue);
+    this.validQueue.activateConsumer(async(message) => {
         const msg = message.getContent();
         // return fibonacci number
-        return factory(msg);
-      }, {noAck: false});
+        return await factory(msg);
+      }, {noAck: true});
   }
 } 
