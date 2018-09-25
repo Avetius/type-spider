@@ -39,7 +39,9 @@ class Broker {
         console.log('queue -> ', this.validQueue);
         this.validQueue.activateConsumer(async (message) => {
             const msg = message.getContent();
-            return await factory(msg);
+            const result = await factory(msg);
+            console.log('broker result -> ', result);
+            return result;
         }, { noAck: true });
     }
 }

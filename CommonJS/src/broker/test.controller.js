@@ -2,8 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class Controller {
     create(input) {
-        console.log('Controller.user() -> ', input);
-        return 'Bolyolyo';
+        return { result: 'Bolyolyo' };
     }
 }
 exports.Controller = Controller;

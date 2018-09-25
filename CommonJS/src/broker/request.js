@@ -3,8 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const broker_1 = require("./broker");
 const broker = new broker_1.Broker();
 async function res() {
-    const res = await broker.send('users', { header: 'create', body: 'Bolyolyo' });
+    const result = await broker.send('users', { header: 'create', body: 'Bolyolyo' });
+    const res = await result.getContent();
+    console.log('result -> ', result);
     console.log('res -> ', res);
+    process.exit(1);
 }
 ;
 res();

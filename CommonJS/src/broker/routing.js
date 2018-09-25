@@ -8,7 +8,9 @@ class Routes {
     async switch(message) {
         switch (message.header) {
             case 'create':
-                return await controller.create(message.body);
+                const result = await controller.create(message.body);
+                console.log('result', result);
+                return result;
         }
     }
 }
