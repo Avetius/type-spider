@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const test_controller_1 = require("./test.controller");
 const broker_1 = require("./broker");
 const controller = new test_controller_1.Controller();
-const broker = new broker_1.Broker();
 class Routes {
     async switch(message) {
         switch (message.header) {
@@ -15,5 +14,5 @@ class Routes {
     }
 }
 const routes = new Routes();
-broker.listen('users', routes.switch);
+broker_1.broker.listen('users', routes.switch);
 //# sourceMappingURL=routing.js.map

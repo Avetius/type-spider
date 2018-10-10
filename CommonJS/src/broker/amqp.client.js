@@ -2,7 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const amqp = require("amqp-ts");
 const connection = new amqp.Connection();
-const queue = connection.declareQueue('rpc_queue', { durable: false });
+const exchange = connection.declareExchange("ServiceExchange");
+const queue = connection.declareQueue('rpc_queue', { durable: true });
+queue.bind(exchange);
+console.log('q -> ', queue);
 const args = process.argv.slice(2);
 const service = args[0].toString;
 const num = args[1];

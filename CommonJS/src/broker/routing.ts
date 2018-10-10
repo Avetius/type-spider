@@ -1,8 +1,7 @@
 import { Controller } from './test.controller';
-import { Broker } from './broker';
+import { broker } from './broker';
 
 const controller = new Controller();
-const broker = new Broker();
 
 class Routes {
   public async switch(message) {

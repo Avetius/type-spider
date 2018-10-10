@@ -3,10 +3,12 @@ import * as amqp from 'amqp-ts'; // for use inside this package
 
 // create a new connection (async)
 const connection = new amqp.Connection();
+const exchange = connection.declareExchange('ServiceExchange');
 
 // declare the rpc_queue queue, it will be created if it does not already exist (async)
-const queue = connection.declareQueue('rpc_queue', {durable: false});
-
+const queue = connection.declareQueue('rpc_queue', {durable: true});
+queue.bind(exchange);
+console.log('q -> ',queue);
 // get the number for fibonacci from the command line
 const args = process.argv.slice(2);
 const service = args[0].toString;

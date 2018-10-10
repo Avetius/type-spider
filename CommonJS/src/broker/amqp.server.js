@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const amqp = require("amqp-ts");
 const connection = new amqp.Connection();
+const exchange = connection.declareExchange("ServiceExchange");
 const queue = connection.declareQueue('rpc_queue', { durable: true });
+queue.bind(exchange);
 console.log('queue -> ', queue);
 queue.activateConsumer((message) => {
     const msg = message.getContent();
