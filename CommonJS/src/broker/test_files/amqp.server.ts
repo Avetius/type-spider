@@ -1,4 +1,4 @@
-import { queues } from './init';
+import { queues } from '../init';
 
 const usersQueue = queues.users;
 const controllersQueue = queues.controllers;

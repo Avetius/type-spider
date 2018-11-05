@@ -1,4 +1,4 @@
-import { queues, connection } from './init';
+import { queues, connection } from '../init';
 
 // get the number for fibonacci from the command line
 const usersMsg = {sendFrom: 'users'}
