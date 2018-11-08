@@ -1,24 +1,28 @@
 //import * as uuid from "uuid";
+import "reflect-metadata";
 import * as morgan from 'morgan';
 import * as helmet from 'helmet';
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as methodOverride from 'method-override';
-//import { broker } from "../../CommonJS/src/base/base.model";
-//import { QueueType } from "../../CommonJS/src/messaging/QueueType";
+import { UserController } from './controllers/user.controller';
+import { useExpressServer } from "routing-controllers";
+
+// import { broker } from "../../CommonJS/src/base/base.model";
+// import { QueueType } from "../../CommonJS/src/messaging/QueueType";
 
 // tslint:disable-next-line:no-var-requires
-//require('./components/passport/strategies/local.strategy');
+// require('./components/passport/strategies/local.strategy');
 
-//import { RoutesInitializer } from "./initializers/routes.initializer";
-//import { MessageHandler } from "./messaging/MessageHandler";
+// import { RoutesInitializer } from "./initializers/routes.initializer";
+// import { MessageHandler } from "./messaging/MessageHandler";
 
 class ExpressApp {
     constructor() {
+        this.initBroker();
         this.app = express();
         this.config();
         this.routesConfig();
-        this.initBroker();
     }
 
     public app: express.Express;
@@ -38,10 +42,10 @@ class ExpressApp {
         //this.app.use(compression());
         this.app.use(helmet.xssFilter());
         this.app.disable('x-powered-by');
-        this.app.use(function (err: any, _req: express.Request, _res: express.Response, next: express.NextFunction) {
-            err.status = 404;
-            next(err);
-        });
+        // this.app.use(function (err: any, _req: express.Request, _res: express.Response, next: express.NextFunction) {
+        //     err.status = 404;
+        //     next(err);
+        // });
         this.app.use(function (_req, res, next) {
             // Website you wish to allow to connect
             res.setHeader('Access-Control-Allow-Origin', '*');
@@ -60,11 +64,11 @@ class ExpressApp {
     }
 
     private routesConfig(): void {
-        const router = express.Router();
-        router.get('/', (_req, res) => {
-            res.json({ message: 'Hello World!' });
-        });
-        this.app.use('/', router);        
+        // const router = express.Router();
+        // router.get('/', (_req, res) => {
+        //     res.json({ message: 'Hello World!' });
+        // });
+        // this.app.use('/', router);        
     }
 
     private async initBroker() {
@@ -79,4 +83,11 @@ class ExpressApp {
     }
 }
 
-export const app = new ExpressApp().app;
+const app = new ExpressApp().app;
+
+useExpressServer(app, { // register created express server in routing-controllers
+    routePrefix: "/api",
+    controllers: [ UserController ] // and configure it the way you need (controllers, validation, etc.)
+});
+
+export default app;

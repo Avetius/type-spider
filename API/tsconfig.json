@@ -29,5 +29,7 @@
     "node_modules",
     "!node_modules/@types"
   ],
-  "compileOnSave": true
+  "compileOnSave": true,
+  "emitDecoratorMetadata": true,
+  "experimentalDecorators": true
 }
