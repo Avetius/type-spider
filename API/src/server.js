@@ -32,13 +32,17 @@ class ExpressApp {
         });
     }
     routesConfig() {
+        const router = express.Router();
+        router.get('/', (_req, res) => {
+            res.json({ message: 'Hello World!' });
+        });
+        this.app.use('/', router);
     }
     async initBroker() {
     }
 }
 const app = new ExpressApp().app;
 routing_controllers_1.useExpressServer(app, {
-    routePrefix: "/api",
     controllers: [user_controller_1.UserController]
 });
 exports.default = app;

@@ -8,6 +8,7 @@ export class UserController {
 
     @Get("/users")
     getAll() {
+        console.log('getAll');
        return broker.send('users', {header:'getAll', body: {}});
     }
 

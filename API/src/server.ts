@@ -64,11 +64,11 @@ class ExpressApp {
     }
 
     private routesConfig(): void {
-        // const router = express.Router();
-        // router.get('/', (_req, res) => {
-        //     res.json({ message: 'Hello World!' });
-        // });
-        // this.app.use('/', router);        
+        const router = express.Router();
+        router.get('/', (_req, res) => {
+            res.json({ message: 'Hello World!' });
+        });
+        this.app.use('/', router);        
     }
 
     private async initBroker() {
@@ -86,7 +86,7 @@ class ExpressApp {
 const app = new ExpressApp().app;
 
 useExpressServer(app, { // register created express server in routing-controllers
-    routePrefix: "/api",
+    //routePrefix: "/api",
     controllers: [ UserController ] // and configure it the way you need (controllers, validation, etc.)
 });
 

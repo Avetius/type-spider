@@ -1,4 +1,4 @@
-import { Controller } from '../test.controller';
+import { Controller } from './test.controller';
 import { Broker } from '../broker';
 
 const controller = new Controller();

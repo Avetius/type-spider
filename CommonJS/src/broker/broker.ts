@@ -2,9 +2,8 @@ import { queues } from './init';
 export class Broker {
   listen (queueName, cb) {
     return queues[queueName].activateConsumer((message) => {
-      var controllersMsg = message.getContent();
-      controllersMsg.sendBack = 'controllers'
-      return controllersMsg;
+      const msg = message.getContent();
+      return cb.switch(msg);
     }, {noAck: true});
   }
   send (queueName, message) {
