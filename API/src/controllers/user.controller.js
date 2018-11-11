@@ -16,55 +16,60 @@ const routing_controllers_1 = require("routing-controllers");
 const broker_1 = require("../../../CommonJS/src/broker/broker");
 const broker = new broker_1.Broker();
 let UserController = class UserController {
-    getAll() {
-        return broker.send('users', { header: 'getAll', body: {} });
+    async getAll() {
+        console.log('getAll');
+        const result = await broker.send('users', { header: 'getAll', body: {} });
+        console.log('result -> ', result);
+        return result;
     }
-    getOne(id) {
-        return broker.send('users', { header: 'getOne', body: { id } });
+    async getOne(id) {
+        const result = await broker.send('users', { header: 'getOne', body: { id } });
+        console.log('result -> ', result);
+        return result;
     }
-    create(user) {
-        return broker.send('users', { header: 'create', body: { user } });
+    async create(user) {
+        return await broker.send('users', { header: 'create', body: { user } });
     }
-    update(id, user) {
-        return broker.send('users', { header: 'update', body: { id, user } });
+    async update(id, user) {
+        return await broker.send('users', { header: 'update', body: { id, user } });
     }
-    remove(id) {
-        return broker.send('users', { header: 'delete', body: id });
+    async remove(id) {
+        return await broker.send('users', { header: 'delete', body: id });
     }
 };
 __decorate([
     routing_controllers_1.Get("/users"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], UserController.prototype, "getAll", null);
 __decorate([
     routing_controllers_1.Get("/users/:id"),
     __param(0, routing_controllers_1.Param("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], UserController.prototype, "getOne", null);
 __decorate([
     routing_controllers_1.Post("/users"),
     __param(0, routing_controllers_1.Body()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], UserController.prototype, "create", null);
 __decorate([
     routing_controllers_1.Put("/users/:id"),
     __param(0, routing_controllers_1.Param("id")), __param(1, routing_controllers_1.Body()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], UserController.prototype, "update", null);
 __decorate([
     routing_controllers_1.Delete("/users/:id"),
     __param(0, routing_controllers_1.Param("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], UserController.prototype, "remove", null);
 UserController = __decorate([
     routing_controllers_1.Controller()

@@ -2,16 +2,19 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const init_1 = require("./init");
 class Broker {
-    listen(queueName, cb) {
-        return init_1.queues[queueName].activateConsumer((message) => {
+    async listen(queueName, callback) {
+        init_1.queues[queueName].activateConsumer(async (message) => {
             const msg = message.getContent();
-            return cb.switch(msg);
+            const cbPromise = callback(msg);
+            const result = Promise.resolve(cbPromise);
+            console.log('broker.result -> ', result);
+            return result;
         }, { noAck: true });
     }
-    send(queueName, message) {
-        return init_1.queues[queueName].rpc(message).then(function (result) {
-            console.log(' From "users" queue got ', result.getContent());
-            return result.getContent();
+    async send(queueName, message) {
+        return init_1.queues[queueName].rpc(message).then(async (result) => {
+            console.log(' From "users" queue got ', await result.getContent());
+            return await result.getContent();
         });
     }
 }

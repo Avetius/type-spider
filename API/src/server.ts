@@ -33,7 +33,7 @@ class ExpressApp {
         //mount query string parser
         this.app.use(bodyParser.urlencoded({ extended: true }));
         // catch 404 and forward to error handler
-        this.app.use(morgan('combined'));  
+        this.app.use(morgan('short'));  
         this.app.use(methodOverride());
         //=============================== Helmet ======================================================================================================
         //this.app.use(helmet.xframe());

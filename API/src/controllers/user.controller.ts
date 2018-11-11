@@ -7,29 +7,33 @@ const broker = new Broker();
 export class UserController {
 
     @Get("/users")
-    getAll() {
+    async getAll() {
         console.log('getAll');
-       return broker.send('users', {header:'getAll', body: {}});
+        const result = await broker.send('users', {header:'getAll', body: {}});
+        console.log('result -> ', result)
+        return result;
     }
 
     @Get("/users/:id")
-    getOne(@Param("id") id: number) {
-       return broker.send('users', {header:'getOne', body: {id}});
+    async getOne(@Param("id") id: number) {
+        const result = await broker.send('users', {header:'getOne', body: {id}});
+        console.log('result -> ', result)
+        return result;
     }
 
     @Post("/users")
-    create(@Body() user: any) {
-       return broker.send('users', {header:'create', body: {user}});
+    async create(@Body() user: any) {
+       return await broker.send('users', {header:'create', body: {user}});
     }
 
     @Put("/users/:id")
-    update(@Param("id") id: number, @Body() user: any) {
-       return broker.send('users', {header:'update', body: {id, user}});
+    async update(@Param("id") id: number, @Body() user: any) {
+       return await broker.send('users', {header:'update', body: {id, user}});
     }
 
     @Delete("/users/:id")
-    remove(@Param("id") id: number) {
-       return broker.send('users', {header:'delete', body: id});
+    async remove(@Param("id") id: number) {
+       return await broker.send('users', {header:'delete', body: id});
     }
 
 }

@@ -18,7 +18,7 @@ class ExpressApp {
     config() {
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: true }));
-        this.app.use(morgan('combined'));
+        this.app.use(morgan('short'));
         this.app.use(methodOverride());
         this.app.use(helmet.xssFilter());
         this.app.disable('x-powered-by');
