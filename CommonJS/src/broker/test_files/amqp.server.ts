@@ -12,28 +12,29 @@ const controllersQueue = queues.controllers;
 
 const arr = [0, 1, 2, 3, 5];
 
-// async function foo(ar) {
-//   return await ar.map((a) => {
-//     return a++;
-//   });
-// }
-
-function bar(ar) {
-  return ar.length;
+async function foo(ar) {
+  return await ar.map((a) => {
+    return a++;
+  });
 }
 
-usersQueue.activateConsumer((message) => {
+// function bar(ar) {
+//   return ar.length;
+// }
+
+usersQueue.activateConsumer(async (message) => {
   var usersMsg = message.getContent();
   console.log('usersMsg -> ', usersMsg);
   usersMsg.sendBack = 'users';
-  const res = bar(arr); // bar(arr); usersMsg
+  const res = await foo(arr); // bar(arr); usersMsg
+  console.log('typeof res -> ', typeof res)
   return res;
-}, {noAck: true});
+}, { noAck: true });
 
 controllersQueue.activateConsumer((message) => {
   var controllersMsg = message.getContent();
   console.log('controllersMsg -> ', controllersMsg);
   controllersMsg.sendBack = 'controllers'
   return controllersMsg;
-}, {noAck: true});
+}, { noAck: true });
 
