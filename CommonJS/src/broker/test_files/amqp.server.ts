@@ -1,5 +1,6 @@
 import { queues } from '../init';
 // import { Controller } from './test.controller';
+import { map, resolve } from 'bluebird';
 
 // const controller = new Controller();
 
@@ -9,32 +10,33 @@ const controllersQueue = queues.controllers;
 // consumer function to the replyTo queue, if it exists
 // this will keep running until the program is halted or is stopped with queue.stopConsumer()
 
-
 const arr = [0, 1, 2, 3, 5];
 
-async function foo(ar) {
-  return await ar.map((a) => {
-    return a++;
+function foo(ar) {
+  const prom = map(ar, (a:number) => {
+    return ++a;
   });
+  return resolve(prom);
 }
 
 // function bar(ar) {
 //   return ar.length;
 // }
 
-usersQueue.activateConsumer(async (message) => {
+usersQueue.activateConsumer((message) => {
   var usersMsg = message.getContent();
   console.log('usersMsg -> ', usersMsg);
-  usersMsg.sendBack = 'users';
-  const res = await foo(arr); // bar(arr); usersMsg
-  console.log('typeof res -> ', typeof res)
-  return res;
+  return foo(arr).then((output) => {
+    console.log('output', output);
+    usersMsg.sendBack = output;
+    const rep = output;
+    return rep; // usersMsg;
+  });
 }, { noAck: true });
 
 controllersQueue.activateConsumer((message) => {
   var controllersMsg = message.getContent();
   console.log('controllersMsg -> ', controllersMsg);
-  controllersMsg.sendBack = 'controllers'
+  controllersMsg.sendBack = 'controllers';
   return controllersMsg;
 }, { noAck: true });
-

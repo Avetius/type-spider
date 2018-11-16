@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const routing_controllers_1 = require("routing-controllers");
 const broker_1 = require("../../../CommonJS/src/broker/broker");
+const auth_1 = require("../middleware/auth/auth");
 const broker = new broker_1.Broker();
 let UserController = class UserController {
     async getAll() {
@@ -36,9 +37,16 @@ let UserController = class UserController {
     async remove(id) {
         return await broker.send('users', { header: 'delete', body: id });
     }
+    async login(user) {
+        return await broker.send('users', { header: 'login', body: { user } });
+    }
+    async signup(user) {
+        return await broker.send('users', { header: 'signup', body: { user } });
+    }
 };
 __decorate([
     routing_controllers_1.Get("/users"),
+    routing_controllers_1.UseBefore(auth_1.isLoggedIn),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
@@ -71,6 +79,20 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "remove", null);
+__decorate([
+    routing_controllers_1.Post("/login"),
+    __param(0, routing_controllers_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "login", null);
+__decorate([
+    routing_controllers_1.Post("/signup"),
+    __param(0, routing_controllers_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "signup", null);
 UserController = __decorate([
     routing_controllers_1.Controller()
 ], UserController);

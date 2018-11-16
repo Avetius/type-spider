@@ -1,12 +1,13 @@
-import {Controller, Param, Body, Get, Post, Put, Delete} from "routing-controllers";
+import {Controller, Param, Body, UseBefore, Get, Post, Put, Delete} from "routing-controllers";
 import { Broker } from '../../../CommonJS/src/broker/broker';
-
+import { isLoggedIn } from '../middleware/auth/auth'
 const broker = new Broker();
 
 @Controller()
 export class UserController {
 
     @Get("/users")
+    @UseBefore(isLoggedIn)
     async getAll() {
         console.log('getAll');
         const result = await broker.send('users', {header:'getAll', body: {}});
@@ -34,6 +35,16 @@ export class UserController {
     @Delete("/users/:id")
     async remove(@Param("id") id: number) {
        return await broker.send('users', {header:'delete', body: id});
+    }
+
+    @Post("/login")
+    async login(@Body() user: any) {
+       return await broker.send('users', {header:'login', body: {user}});
+    }
+
+    @Post("/signup")
+    async signup(@Body() user: any) {
+       return await broker.send('users', {header:'signup', body: {user}});
     }
 
 }

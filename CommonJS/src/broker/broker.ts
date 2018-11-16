@@ -1,19 +1,23 @@
 import { queues } from './init';
+
 export class Broker {
-  async listen (queueName, callback) {
-    queues[queueName].activateConsumer(async (message) => {
+  async listen (queueName, cback) {
+    // console.log('typeof cback -> ', typeof cback);
+    // console.log('cback', cback);
+    queues[queueName].activateConsumer((message) => {
       const msg = message.getContent();
-      const cbPromise = callback(msg);
-      const result = Promise.resolve(cbPromise);
-      console.log('broker.result -> ', result)
-      return result;
+      return cback(msg)
+      // .then((result) => {
+      //   console.log('Broker result -> ', result);
+      //   return result;
+      // });
     }, {noAck: true});
   }
+
   async send (queueName, message) {
-    return queues[queueName].rpc(message).then(async (result) => {
-      console.log(' From "users" queue got ', await result.getContent());
-      return await result.getContent();
+    return queues[queueName].rpc(message).then((result) => {
+      console.log(' From "users" queue got ', result.getContent());
+      return result.getContent();
     });
   }
 }
-

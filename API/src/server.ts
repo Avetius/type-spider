@@ -1,5 +1,5 @@
 //import * as uuid from "uuid";
-import "reflect-metadata";
+import 'reflect-metadata';
 import * as morgan from 'morgan';
 import * as helmet from 'helmet';
 import * as express from "express";
