@@ -4,7 +4,7 @@ import { queues, connection } from '../init';
 const usersMsg = {sendFrom: 'users'}
 const controllersMsg = {sendFrom: 'controllers'}
 
-console.log(' [x] Requesting fib(%d)', usersMsg);
+// console.log(' [x] Requesting fib(%d)', usersMsg);
 
 const usersQueue = queues.users;
 const controllersQueue = queues.controllers;

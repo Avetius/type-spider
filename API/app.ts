@@ -1,5 +1,4 @@
-// import config from '../../commonjs/configs/api.mjs';
-import { app } from './src/server';
+import app from './src/server';
 import * as http from 'http';
 
 const config = 8080;

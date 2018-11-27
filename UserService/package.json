@@ -1,0 +1,20 @@
+{
+  "name": "userservice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "@types/sequelize": "^4.27.31",
+    "bcrypt-nodejs": "^0.0.3",
+    "bluebird": "^3.5.3",
+    "knex": "^0.15.2",
+    "mongoose": "^5.3.12",
+    "pg": "^7.6.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Avetius",
+  "license": "ISC"
+}

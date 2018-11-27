@@ -1,18 +1,63 @@
-import { Broker } from '../../CommonJS/src/broker/broker';
-import { authController } from './services/auth/controller';
-const broker = new Broker();
+import { Broker } from '../CommonJS/src/broker/broker';
+import { UserController } from './src/services/user/controllers/user.controller';
+import * as db from './src/db';
 
-class Routes {
-  public async switch(message) {
-    switch (message.header) {
-      case 'create':
-      return await authController.create(message.body);
-      break;
-      case '':
-      return await 
-    }
+console.log('db -> ', db);
+
+const broker = new Broker();
+const userController = new UserController();
+
+async function actions(message) {
+  let result;
+  switch (message.header) {
+    case 'getAll':
+    result = userController.getAll(message.body);
+    break;
+
+    case 'getOne':
+    result = userController.getOne(message.body);
+    break;
+
+    case 'create':
+    result = userController.create(message.body);
+    break;
+    
+    case 'update':
+    result = userController.update(message.body);
+    break; 
+
+    case 'delete':
+    result = userController.delete(message.body);
+    break;
+
+    case 'signup':
+    result = userController.signup(message.body);
+    break;
+
+    case 'login':
+    result = userController.login(message.body);
+    break;
+
+    case 'loginJWT':
+    result = userController.loginJWT(message.body);
+    break;
+
+    case 'loginFB':
+    result = userController.loginFB(message.body);
+    break;
+
+    case 'loginGoogle':
+    result = userController.loginGoogle(message.body);
+    break;
+
+    case 'deserializeUser':
+    result = userController.deserializeUser(message.body);
+    break;
   }
+  
+  console.log('app.result -> ', result);
+  return result;
 }
 
-const routes = new Routes();
-broker.listen('users', routes.switch);
+broker.listen('users', actions);
+console.log('listening to "users"');

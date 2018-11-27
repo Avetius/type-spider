@@ -41,7 +41,7 @@ function onError(error) {
             throw error;
     }
 }
-const server = http.createServer(server_1.app);
+const server = http.createServer(server_1.default);
 server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);

@@ -1,4 +1,6 @@
-// import { queueNames } from './config';
+// import { queueNames } from './config'; 
+// todo make queue declaration from config
+
 
 import * as amqp from 'amqp-ts';
 
