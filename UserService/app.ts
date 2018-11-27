@@ -5,17 +5,11 @@ const broker = new Broker();
 class Routes {
   public async switch(message) {
     switch (message.header) {
-      case 'auth':
-        return await authController.auth(message.body);
-      break; 
-
-      case 'signin':
-        return await authController.create(message.body);
+      case 'create':
+      return await authController.create(message.body);
       break;
-      
-      case 'signup':
-        return await authController.auth(message.body);
-      break; 
+      case '':
+      return await 
     }
   }
 }
