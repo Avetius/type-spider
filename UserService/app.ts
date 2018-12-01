@@ -1,9 +1,8 @@
 import { Broker } from '../CommonJS/src/broker/broker';
 import { UserController } from './src/services/user/controllers/user.controller';
-import { db } from './src/db';
-//import { resolve } from 'bluebird';
+// import * as db from './src/db';
 
-db.on('error', console.error.bind(console, 'Mongo connection error:'));
+// db.on('error', console.error.bind(console, 'Mongo connection error:'));
 
 const broker = new Broker();
 const userController = new UserController();
@@ -56,6 +55,7 @@ async function actions(message) {
     result = userController.deserializeUser(message.body);
     break;
   }
+  
   console.log('app.result -> ', result);
   return result;
 }

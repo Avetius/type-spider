@@ -185,23 +185,23 @@
 
 //     // tslint:disable-next-line:no-any
 //     public static async update<T>(this: GenericModel<T> | typeof BaseModel, data: any, byFields: object = { "id": data.id }, conflictRule?: string, model?: GenericModel<T>): Promise<T> {
-//         const fields = Object.assign({}, data);
-//         delete fields.autoSendLog;
-//         Object.keys(byFields).forEach(key => delete fields[key]);
-//         CleanObject(fields);
-//         if (Object.keys(fields).length == 0) new (model || this as GenericModel<T>)(this);
-//         let query = QueryBuilder.table((model || this).tableName).update(fields).where(byFields).toString();
+//       const fields = Object.assign({}, data);
+//       delete fields.autoSendLog;
+//       Object.keys(byFields).forEach(key => delete fields[key]);
+//       CleanObject(fields);
+//       if (Object.keys(fields).length == 0) new (model || this as GenericModel<T>)(this);
+//       let query = QueryBuilder.table((model || this).tableName).update(fields).where(byFields).toString();
 
-//         if (conflictRule) {
-//             query += " " + conflictRule;
-//         }
-//         query += " returning *;";
+//       if (conflictRule) {
+//           query += " " + conflictRule;
+//       }
+//       query += " returning *;";
 
-//         const result = await BaseModel.db.oneOrNone(query).catch(err => {
-//             console.log(err);
-//             throw err;
-//         });
-//         return new (model || this as GenericModel<T>)(result);
+//       const result = await BaseModel.db.oneOrNone(query).catch(err => {
+//         console.log(err);
+//         throw err;
+//       });
+//       return new (model || this as GenericModel<T>)(result);
 //     }
 
 //     // tslint:disable-next-line:no-any

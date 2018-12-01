@@ -4,15 +4,15 @@ import IUser from '../interfaces/user.interface';
 
 export class UserController {
   async getAll(input: Partial<UserFilter>) { 
-    return await User.find(input, IUser).exec();
+    return await User.find(input, IUser);
   }
 
   async getOne(input: Partial<UserFilter>) {
-    return await User.findOne(input, IUser).exec();
+    return await User.findOne(input, IUser);
   }
   
   async create(input: Partial<UserFilter>) {
-    return await new User(input).save((err) => { return err;});
+    return await new User(input).save();
   }
   
   async update(input) {
@@ -29,14 +29,14 @@ export class UserController {
       const user = await User.findOne({
         where: { email },
       });
-      if (user) return {err: null, user: false};
+      if (user) return {err:null, user:false}; // done(null, false);
       const newUser = new User();
       newUser.email = email;
       newUser.password = newUser.generateHash(password);
-      newUser.save().then(() => {err: null, user: newUser}; });
+      newUser.save().then(() => { return {err: null, user: newUser}; }); // done(null, newUser);
     } catch (err) {
       console.error(err);
-      done(err);
+      return {err, user: null}; // done(err);
     }
   }
 

@@ -1,27 +1,19 @@
+import { UserRoles } from '../enums/user.enum';
 class IUser {
   public email?: string;
-    
-  public facebook?: {
-    id?: string,
-    token?: string,
-    name?: string,
-    email?: string,
-  }; 
-
-  public twitter?: {
-    id?: string,
-    token?: string,
-    displayName?: string,
-    username?: string,
-  };
-
-  public google?: {
-    id?: string,
-    token?: string,
-    email?: string,
-    name?: string,
-  };
-  privileges: string;
+  public password?: string;
+  public facebook_id?: string;
+  public facebook_token?: string;
+  public facebook_name?: string;
+  public facebook_email?: string;
+   
+  public google_id?: string;
+  public google_token?: string;
+  public google_email?: string;
+  public google_name?: string;
+  
+  public role: UserRoles;
+  public verified: boolean;
 }
 
 export default IUser;
