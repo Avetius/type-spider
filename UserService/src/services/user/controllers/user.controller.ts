@@ -24,11 +24,20 @@ export class UserController {
   }
 
   async signup(input) {
-    return await User.findOne({ 'email' :  input.email }, async (err, user) => {
-      if (err) return {err, user:null}; //done(err);
-      if (user) return {err:'That email is already taken.', user:null};
-      return await User.create({ email: input.email, password: input.password });
-    });    
+    try {
+      const { email, password } = input;
+      const user = await User.findOne({
+        where: { email },
+      });
+      if (user) return {err: null, user: false};
+      const newUser = new User();
+      newUser.email = email;
+      newUser.password = newUser.generateHash(password);
+      newUser.save().then(() => {err: null, user: newUser}; });
+    } catch (err) {
+      console.error(err);
+      done(err);
+    }
   }
 
   async login(input) {

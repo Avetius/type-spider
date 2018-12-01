@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const broker_1 = require("../CommonJS/src/broker/broker");
 const user_controller_1 = require("./src/services/user/controllers/user.controller");
 const db_1 = require("./src/db");
-console.log('db -> ', db_1.db);
+db_1.db.on('error', console.error.bind(console, 'Mongo connection error:'));
 const broker = new broker_1.Broker();
 const userController = new user_controller_1.UserController();
 async function actions(message) {
@@ -25,7 +25,8 @@ async function actions(message) {
             result = userController.delete(message.body);
             break;
         case 'signup':
-            result = userController.signup(message.body);
+            result = await userController.signup(message.body);
+            console.log('in case result -> ', result);
             break;
         case 'login':
             result = userController.login(message.body);

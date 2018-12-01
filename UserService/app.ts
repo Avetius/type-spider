@@ -1,8 +1,9 @@
 import { Broker } from '../CommonJS/src/broker/broker';
 import { UserController } from './src/services/user/controllers/user.controller';
 import { db } from './src/db';
+//import { resolve } from 'bluebird';
 
-console.log('db -> ', db);
+db.on('error', console.error.bind(console, 'Mongo connection error:'));
 
 const broker = new Broker();
 const userController = new UserController();
@@ -31,7 +32,8 @@ async function actions(message) {
     break;
 
     case 'signup':
-    result = userController.signup(message.body);
+    result = await userController.signup(message.body);
+    console.log('in case result -> ', result);
     break;
 
     case 'login':
