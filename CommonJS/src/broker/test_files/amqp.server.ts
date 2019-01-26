@@ -24,7 +24,7 @@ function foo(ar) {
 // }
 
 usersQueue.activateConsumer((message) => {
-  var usersMsg = message.getContent();
+  let usersMsg = message.getContent();
   console.log('usersMsg -> ', usersMsg);
   return foo(arr).then((output) => {
     console.log('output', output);
@@ -35,7 +35,7 @@ usersQueue.activateConsumer((message) => {
 }, { noAck: true });
 
 controllersQueue.activateConsumer((message) => {
-  var controllersMsg = message.getContent();
+  let controllersMsg = message.getContent();
   console.log('controllersMsg -> ', controllersMsg);
   controllersMsg.sendBack = 'controllers';
   return controllersMsg;

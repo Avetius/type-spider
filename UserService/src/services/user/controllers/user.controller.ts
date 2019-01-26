@@ -1,4 +1,4 @@
-import User from '../models/user.model';
+import User from '../models/user.model.old';
 import UserFilter from '../filters/user.filter';
 import IUser from '../interfaces/user.interface';
 

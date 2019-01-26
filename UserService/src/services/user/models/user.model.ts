@@ -1,83 +1,49 @@
-// import db from '../../../db';
-import bcrypt from 'bcrypt-nodejs';
-import { knex } from '../../../db';
-import IUser from '../interfaces/user.interface';
+import { BaseModel } from "../../../../../CommonJS/src/base/base.model";
+import { IUsersModel, IUsersUpdateModel } from "../interfaces/users.interface";
+import { BonusType } from "../../risk_group/enums/bonus_type.enum";
 
-const User = knex('users');
+export class UsersUpdateModel extends BaseModel implements IUsersUpdateModel {
+    public static tableName: string = 'sports_users';
+    public id?: number;
+    public risk_group_id: number;
+    public favorite_sports: number[];
+    public acceptance_policy: number;
+    public quick_bet: boolean;
+    public time_zone: string;
+    public bet_factor: number | null;
+    public in_play_bet_delay: number | null;
+    public max_stake: number | null;
+    public max_won: number | null;
+    public min_comb: number | null;
+    public max_comb: number | null;
+    public overask: boolean | null;
+    public bonuses: BonusType[];
 
-User.create = function(user:IUser){
-  user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(8));
-  User.insert(user);
+    constructor(data: IUsersModel) {
+        super();
+        this.id = data.id;
+        this.risk_group_id = data.risk_group_id;
+        this.favorite_sports = data.favorite_sports;
+        this.acceptance_policy = data.acceptance_policy;
+        this.quick_bet = data.quick_bet;
+        this.time_zone = data.time_zone;
+        this.bet_factor = data.bet_factor;
+        this.in_play_bet_delay = data.in_play_bet_delay;
+        this.max_stake = data.max_stake;
+        this.max_won = data.max_won;
+        this.min_comb = data.min_comb;
+        this.max_comb = data.max_comb;
+        this.overask = data.overask;
+        this.bonuses = data.bonuses;
+    }
 }
 
-User.update = function(id:number, user:IUser){
-  if(user.password) user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(8));
-  User.where({ id })
-  .update(user);
+export class UsersModel extends UsersUpdateModel implements IUsersModel {
+    public id: number;
+    public external_user_id: number;
+
+    constructor(data: IUsersModel) {
+        super(data);
+        this.external_user_id = data.external_user_id;
+    }
 }
-
-
-
-// const Schema = mongoose.Schema;
-
-// const UserSchema = new Schema({
-//   email:  String,
-//   password: String,
-  
-//   facebook : {
-//     id : String,
-//     token : String,
-//     name : String,
-//     email : String,
-//   },
-//   twitter : {
-//     id : String,
-//     token : String,
-//     displayName : String,
-//     username : String,
-//   },
-//   google : {
-//     id : String,
-//     token : String,
-//     email : String,
-//     name : String,
-//   },
-
-//   privileges: String,
-// });
-
-User.prototype.generateHash = () => {
-  return bcrypt.hashSync(this.password, bcrypt.genSaltSync(8));
-};
-
-<<<<<<< HEAD
-// checking if password is valid
-User.prototype.validPassword = (password) => {
-  return bcrypt.compareSync(password, this.password);
-};
-=======
-UserSchema.pre('save', async function(next){
-  //'this' refers to the current document about to be saved
-  //Hash the password with a salt round of 10, the higher the rounds the more secure, but the slower
-  //your application becomes.
-  console.log('this -> -> -> ',this);
-  const hash = await bcrypt.hash(this.schema.obj.password, 10);
-  //Replace the plain text password with the hash and then store it
-  this.schema.obj.password = hash;
-  //Indicates we're done and moves on to the next middleware
-  next();
-});
-
-//We'll use this later on to make sure that the user trying to log in has the correct credentials
-UserSchema.methods.isValidPassword = async function(password){
-  const user = this;
-  //Hashes the password sent by the user for login and checks if the hashed password stored in the 
-  //database matches the one sent. Returns true if it does else false.
-  const compare = await bcrypt.compare(password, user.password);
-  return compare;
-}
-
-// const User = mongoose.model('User', UserSchema);
->>>>>>> 8b6e022e021659df7efc8d75e97316e1173032c9
-
-export default User;

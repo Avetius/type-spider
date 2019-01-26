@@ -33,7 +33,7 @@ export const isAdmin = (req, res, next) => {
     next();
   }else{
     console.log('Permission Denied');
-    res.send('Permission Denied')
+    res.send('Permission Denied');
   }
 };
 
@@ -46,7 +46,7 @@ export const isOwner = (req, res, next) => {
 		next();
 	}else{
 		console.log('Permission Denied');
-		res.send('Permission Denied')
+		res.send('Permission Denied');
 	}
 };
 
