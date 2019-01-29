@@ -4,9 +4,10 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "@types/bcrypt-nodejs": "0.0.30",
     "@types/sequelize": "^4.27.31",
     "@types/uuid": "^3.4.4",
-    "bcrypt-nodejs": "^0.0.3",
+    "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.5.3",
     "knex": "^0.15.2",
     "pg": "^7.6.1"

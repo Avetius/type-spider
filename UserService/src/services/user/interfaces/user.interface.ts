@@ -4,7 +4,7 @@ export interface IUser {
   id?: number;
   username?: string;
   email?: string;
-  password?: string;
+  password: string;
   subTopic?: string;
   
   firstname?: string;
@@ -64,8 +64,9 @@ export interface IUserFilter {
   roles?: string[];
   emailVerified: boolean;
   phoneVerified: boolean;
-  subTopic: boolean;
-  subTopics: string[];
+  password?: string;
+  subTopic?: boolean;
+  subTopics?: string[];
   limit: number;
   page: number;
   order: string;

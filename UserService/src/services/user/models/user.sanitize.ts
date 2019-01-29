@@ -1,6 +1,6 @@
 import { ErrorUtil, ErrorCodes } from '../../../../../CommonJS/src/errorHandling/errorCodes';
 import { User } from './user.model';
-import { IUser } from '../interfaces/user.interface';
+import { IUser, IPublicUser } from '../interfaces/user.interface';
 import { isEmail } from 'validator';
 import { each } from 'bluebird';
 import { isNull, isUndefined, isDate } from "util";
@@ -50,11 +50,6 @@ export class UserSanitized extends User {
       minLength: 2,
       error: ErrorCodes.INVALID_STATE
     },
-    'zip_code': {
-      type: ValidationFieldTypes.STRING,
-      minLength: 3,
-      error: ErrorCodes.INVALID_ZIP_CODE
-    },
     'phone': {
       type: ValidationFieldTypes.STRING,
       minLength: 8,
@@ -76,7 +71,7 @@ export class UserSanitized extends User {
     },
   };
   private modelIsValidated: boolean = false;
-  public password?: string;
+  public password: string;
 
   constructor(init: IUser) {
     super(init);
@@ -84,18 +79,18 @@ export class UserSanitized extends User {
     this.password = init.password;
   }
 
-    /**
-     * public model save method
-     * default validate model before save
-     *
-     * @param {boolean} needValidate
-     * @param {boolean} send_email
-     * @returns {Promise<IUser>}
-     */
-    public async saveAndReturn(): Promise<IUser> {
-      await this.validateUserInfo();
-      return this.saveAndSendEmail();
-    }
+  /**
+   * public model save method
+   * default validate model before save
+   *
+   * @param {boolean} needValidate
+   * @param {boolean} send_email
+   * @returns {Promise<IUser>}
+   */
+  public async saveAndReturn(): Promise<IPublicUser> {
+    await this.validateUserInfo();
+    return await this.saveAndSendEmail();
+  }
 
   /**
    * getter model validation status
@@ -106,7 +101,6 @@ export class UserSanitized extends User {
     return this.modelIsValidated;
   }
 
-  
   /**
    * private model save method
    * create user.password_hash,
@@ -115,22 +109,23 @@ export class UserSanitized extends User {
    *
    * @returns {Promise<IUser>}
    */
-  private async saveAndSendEmail(): Promise<IUser> {
-      await this.generateSaltAndHash(this.password);
+  private async saveAndSendEmail(): Promise<IPublicUser> {
+    await this.generateHash();
 
-      // sendmail
+    // sendmail
 
-      // broker.publishMessageWithCode(CommunicationCodes.SEND_EMAIL_REGISTRATION, {
-      //     category: EmailCategory.IMPORTANT,
-      //     email: this.email,
-      //     username: this.username,
-      //     first_name: this.firstname,
-      //     last_name: this.lastname,
-      //     // TODO: change this user to domain api url and rewrite url in nginx and point to our api
-      //     url: "https://api.bet-makers.com/v1/verify/email?hash=" + hash,
-      // }, QueueType.EMAIL_SERVICE);
-      // save user to DB
-      return await (new User(this)).saveWithID();
+    // broker.publishMessageWithCode(CommunicationCodes.SEND_EMAIL_REGISTRATION, {
+    //     category: EmailCategory.IMPORTANT,
+    //     email: this.email,
+    //     username: this.username,
+    //     first_name: this.firstname,
+    //     last_name: this.lastname,
+    //     // TODO: change this user to domain api url and rewrite url in nginx and point to our api
+    //     url: "https://api.bet-makers.com/v1/verify/email?hash=" + hash,
+    // }, QueueType.EMAIL_SERVICE);
+    // save user to DB
+    const saved = await new User(this).saveWithID();
+    return <IPublicUser>saved;
   }
 
   /**
@@ -139,8 +134,8 @@ export class UserSanitized extends User {
    * @returns {void}
    */
   private async validateUserInfo(): Promise<void> {
-      await this.validateFields();
-      this.modelIsValidated = true;
+    await this.validateFields();
+    this.modelIsValidated = true;
   }
 
   /**
@@ -150,28 +145,28 @@ export class UserSanitized extends User {
    * @returns {void}
    */
   private async validateFields(): Promise<void> {
-      await each(Object.keys(UserSanitized.requiredFields), async key => {
-          await this.checkRequiredFields(key);
-          // check username
-          if (key === 'username') await this.checkUserUniq(key)
-              .catch(() => {
-                  throw ErrorUtil.newError(ErrorCodes.USERNAME_ALREADY_EXISTS);
-              });
-          // check phone
-          if (key === 'phone') await this.checkUserUniq(key)
-              .catch(() => {
-                  throw ErrorUtil.newError(ErrorCodes.PHONE_ALREADY_EXISTS);
-              });
-          // check email
-          if (key === 'email' && isEmail(<string>this[key])) await this.checkUserUniq(key)
-              .catch(() => {
-                  throw ErrorUtil.newError(ErrorCodes.EMAIL_ALREADY_EXISTS);
-              });
-          if (key === 'email' && !isEmail(<string>this[key])) throw ErrorUtil.newError(UserSanitized.requiredFields[key].error);
-          // check other fields
-          if (UserSanitized.requiredFields[key].type === ValidationFieldTypes.STRING) this.validateStringField(key);
-          if (UserSanitized.requiredFields[key].type === ValidationFieldTypes.DATE) this.validateDateFiled(key);
-      });
+    await each(Object.keys(UserSanitized.requiredFields), async key => {
+      await this.checkRequiredFields(key);
+      // check username
+      if (key === 'username') await this.checkUserUniq(key)
+        .catch(() => {
+          throw ErrorUtil.newError(ErrorCodes.USERNAME_ALREADY_EXISTS);
+        });
+      // check phone
+      if (key === 'phone') await this.checkUserUniq(key)
+        .catch(() => {
+          throw ErrorUtil.newError(ErrorCodes.PHONE_ALREADY_EXISTS);
+        });
+      // check email
+      if (key === 'email' && isEmail(<string>this[key])) await this.checkUserUniq(key)
+        .catch(() => {
+          throw ErrorUtil.newError(ErrorCodes.EMAIL_ALREADY_EXISTS);
+        });
+      if (key === 'email' && !isEmail(<string>this[key])) throw ErrorUtil.newError(UserSanitized.requiredFields[key].error);
+      // check other fields
+      if (UserSanitized.requiredFields[key].type === ValidationFieldTypes.STRING) this.validateStringField(key);
+      if (UserSanitized.requiredFields[key].type === ValidationFieldTypes.DATE) this.validateDateFiled(key);
+    });
   }
 
   /**

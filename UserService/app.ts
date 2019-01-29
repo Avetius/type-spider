@@ -55,8 +55,12 @@ async function actions(message) {
     // result = userController.deserializeUser(message.body);
     // break;
 
+    case 'login':
+    result = userController.findOne(message.body);
+    break;
+
     case 'RegisterUser':
-    result = userController.RegisterUser(message.body);
+    result = userController.create(message.body);
     break;
   }
   
